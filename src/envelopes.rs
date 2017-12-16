@@ -53,3 +53,34 @@ impl OptionEnvelope for Env {
         }
     }
 }
+
+
+pub struct EnvSeq {
+    seq: Vec<Env>,
+    i: usize,
+}
+
+impl EnvSeq {
+    pub fn new(seq: Vec<Env>) -> EnvSeq {
+        EnvSeq { seq: seq, i: 0 }
+    }
+}
+
+impl OptionEnvelope for EnvSeq {
+    fn get_percent_option(&mut self) -> Option<Percent> {
+        loop {
+            if self.i >= self.seq.len() {
+                return None;
+            }
+
+            let result = self.seq[self.i].get_percent_option();
+            match result {
+                Some(_) => return result,
+                None => {
+                    self.i += 1;
+                    continue;
+                }
+            };
+        }
+    }
+}

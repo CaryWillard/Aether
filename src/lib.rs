@@ -27,7 +27,7 @@ use std::f64;
 
 use output::Output;
 use oscillators::{Oscillator, Osc};
-use envelopes::Envelope;
+use envelopes::OptionEnvelope;
 
 pub fn run() {
     play_osc();
@@ -38,12 +38,19 @@ fn play_osc() {
 
     let mut osc2 = Osc::new(110.0, 44_100, Box::new(waveforms::Square::new(0.7)));
 
-    let mut env = envelopes::Env::new(3.0, 44_100, Box::new(envelope_forms::Line::new(0.0, 1.0)));
+    let env1 = envelopes::Env::new(0.5, 44_100, Box::new(envelope_forms::Line::new(0.0, 1.0)));
+    let env2 = envelopes::Env::new(0.5, 44_100, Box::new(envelope_forms::Line::new(1.0, 0.75)));
+    let env3 = envelopes::Env::new(0.7, 44_100, Box::new(envelope_forms::Line::new(0.75, 0.75)));
+    let env4 = envelopes::Env::new(0.5, 44_100, Box::new(envelope_forms::Line::new(0.75, 0.0)));
+    let mut env_seq = envelopes::EnvSeq::new(vec![env1, env2, env3, env4]);
 
     loop {
         let sample2 = osc2.get_amplitude();
-        let env_perc = env.get_percent();
-        out.send(sample2 * env_perc, 1024.0);
+        let env_op = env_seq.get_percent_option();
+        match env_op {
+            Some(p) => out.send(sample2 * p, 1024.0),
+            None => break,
+        };
     }
 }
 
