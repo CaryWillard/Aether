@@ -36,18 +36,16 @@ pub fn run() {
 fn play_osc() {
     let mut out = output::StdOutput::new();
 
-    let mut osc1 = Osc::new(110.0, 44_100, Box::new(waveforms::Sine));
     let mut osc2 = Osc::new(110.0, 44_100, Box::new(waveforms::Square::new(0.7)));
 
-    let env = envelopes::Line::new(1.0, 0.0);
+    let env = envelopes::Line::new(0.0, 1.0);
     let mut indexer = indexers::UnpitchedIndexer::new();
-    indexer.set_increment(10.0, 44_100);
+    indexer.set_increment(1.0, 44_100);
 
     loop {
-        let sample1 = osc1.get_amplitude();
-        let sample2 = osc2.get_amplitude() * 0.5;
+        let sample2 = osc2.get_amplitude();
         let env_perc = env.get_percent(indexer.get_next());
-        out.send((sample1 + sample2) * env_perc, 512.0);
+        out.send(sample2 * env_perc, 1024.0);
     }
 }
 
