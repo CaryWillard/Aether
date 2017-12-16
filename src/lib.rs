@@ -4,7 +4,7 @@ extern crate byteorder;
 pub mod waveforms;
 pub mod indexers;
 pub mod oscillators;
-pub mod envelopeforms;
+pub mod envelope_forms;
 pub mod envelopes;
 pub mod output;
 
@@ -27,8 +27,7 @@ use std::f64;
 
 use output::Output;
 use oscillators::{Oscillator, Osc};
-use indexers::PercentIndexer;
-use envelopes::EnvelopeForm;
+use envelopes::Envelope;
 
 pub fn run() {
     play_osc();
@@ -39,13 +38,11 @@ fn play_osc() {
 
     let mut osc2 = Osc::new(110.0, 44_100, Box::new(waveforms::Square::new(0.7)));
 
-    let env = envelopes::Line::new(0.0, 1.0);
-    let mut indexer = indexers::UnpitchedIndexer::new();
-    indexer.set_increment(1.0, 44_100);
+    let mut env = envelopes::Env::new(3.0, 44_100, Box::new(envelope_forms::Line::new(0.0, 1.0)));
 
     loop {
         let sample2 = osc2.get_amplitude();
-        let env_perc = env.get_percent(indexer.get_next());
+        let env_perc = env.get_percent();
         out.send(sample2 * env_perc, 1024.0);
     }
 }
