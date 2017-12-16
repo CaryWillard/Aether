@@ -23,19 +23,11 @@ impl Waveform for Sine {
     }
 }
 
-pub struct Saw {
-    wavelength: Wavelength,
-}
-
-impl Saw {
-    pub fn new(wavelength: Wavelength) -> Saw {
-        Saw { wavelength: wavelength }
-    }
-}
+pub struct Saw;
 
 impl Waveform for Saw {
     fn get_amplitude(&self, phase: Phase) -> Amplitude {
-        ((phase % self.wavelength) / self.wavelength) * 2.0 - 1.0
+        ((phase % self.get_wavelength()) / self.get_wavelength()) * 2.0 - 1.0
     }
 
     fn get_wavelength(&self) -> Wavelength {
@@ -44,22 +36,18 @@ impl Waveform for Saw {
 }
 
 pub struct Square {
-    wavelength: Wavelength,
     pulse_width: Percent,
 }
 
 impl Square {
-    pub fn new(wavelength: Wavelength, pulse_width: Percent) -> Square {
-        Square {
-            wavelength: wavelength,
-            pulse_width: pulse_width,
-        }
+    pub fn new(pulse_width: Percent) -> Square {
+        Square { pulse_width: pulse_width }
     }
 }
 
 impl Waveform for Square {
     fn get_amplitude(&self, phase: Phase) -> Amplitude {
-        if (phase % self.wavelength) / self.wavelength < self.pulse_width {
+        if (phase % self.get_wavelength()) / self.get_wavelength() < self.pulse_width {
             return -1.0;
         } else {
             return 1.0;
