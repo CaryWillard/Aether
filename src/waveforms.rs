@@ -1,12 +1,14 @@
 // Waveforms
 
+use std::f64;
 use rand;
 use rand::Rng;
 
-use super::{Amplitude, Phase, Percent, Wavelength};
+use super::{Amplitude, Phase, Percent, Wavelength, SampleRate};
 
 pub trait Waveform {
     fn get_amplitude(&self, phase: Phase) -> Amplitude;
+    fn get_wavelength(&self) -> Wavelength;
 }
 
 pub struct Sine;
@@ -14,6 +16,10 @@ pub struct Sine;
 impl Waveform for Sine {
     fn get_amplitude(&self, phase: Phase) -> Amplitude {
         phase.sin()
+    }
+
+    fn get_wavelength(&self) -> Wavelength {
+        f64::consts::PI * 2.0
     }
 }
 
@@ -30,6 +36,10 @@ impl Saw {
 impl Waveform for Saw {
     fn get_amplitude(&self, phase: Phase) -> Amplitude {
         ((phase % self.wavelength) / self.wavelength) * 2.0 - 1.0
+    }
+
+    fn get_wavelength(&self) -> Wavelength {
+        1.0
     }
 }
 
@@ -55,6 +65,10 @@ impl Waveform for Square {
             return 1.0;
         }
     }
+
+    fn get_wavelength(&self) -> Wavelength {
+        1.0
+    }
 }
 
 pub struct WhiteNoise {
@@ -62,9 +76,9 @@ pub struct WhiteNoise {
 }
 
 impl WhiteNoise {
-    pub fn new(num_samples: usize) -> WhiteNoise {
-        // Store a buffer of three seconds of noise.
-        let mut buffer: Vec<f64> = Vec::with_capacity(num_samples);
+    pub fn new(sample_rate: SampleRate) -> WhiteNoise {
+        // Stores several seconds of noise.
+        let mut buffer: Vec<f64> = Vec::with_capacity((sample_rate * 4) as usize);
         let mut rng = rand::thread_rng();
         for _ in 0..buffer.capacity() {
             buffer.push(rng.gen::<f64>());
@@ -76,5 +90,9 @@ impl WhiteNoise {
 impl Waveform for WhiteNoise {
     fn get_amplitude(&self, index: Phase) -> Amplitude {
         self.buffer[(index as usize) % self.buffer.len()]
+    }
+
+    fn get_wavelength(&self) -> Wavelength {
+        self.buffer.len() as Wavelength
     }
 }

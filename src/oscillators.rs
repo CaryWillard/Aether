@@ -17,12 +17,8 @@ pub struct Osc {
 }
 
 impl Osc {
-    pub fn new(freq: Frequency,
-               wavelength: Wavelength,
-               sample_rate: SampleRate,
-               waveform: Box<Waveform>)
-               -> Osc {
-
+    pub fn new(freq: Frequency, sample_rate: SampleRate, waveform: Box<Waveform>) -> Osc {
+        let wavelength: Wavelength = waveform.get_wavelength();
         Osc {
             waveform: waveform,
             indexer: Box::new(PitchedIndexer::new()),
