@@ -1,0 +1,4 @@
+error: Unknown flag: '--rate'
+
+Usage:
+    cargo run [options] [--] [<args>...]

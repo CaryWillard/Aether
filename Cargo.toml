@@ -1,0 +1,16 @@
+[package]
+name = "aether"
+version = "0.0.1"
+authors = ["Cary Willard <carywillard7@gmail.com>"]
+
+[lib]
+name = "aether"
+path = "src/lib.rs"
+
+[[bin]]
+name = "aetherd"
+path = "src/main.rs"
+
+[dependencies]
+rand = "0.3.18"
+byteorder = "1"
