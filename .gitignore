@@ -1,9 +1,6 @@
 /target/
 **/*.rs.bk
 Cargo.lock
-
-# Helper scripts for manual testing
-/test_scripts/
-
-# vim
 *.swp
+*.log
+/test_scripts/
