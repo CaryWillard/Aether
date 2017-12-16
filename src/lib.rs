@@ -4,14 +4,22 @@ extern crate byteorder;
 pub mod waveforms;
 pub mod indexers;
 pub mod oscillators;
+pub mod envelopes;
 pub mod output;
 
+// Seconds
+type Seconds = f64;
+// Speaker position relative to 0.
 type Amplitude = f64;
+// Number of samples offset from the beginning of a wave.
 type Phase = f64;
 // On range [0.0, 1.0]
 type Percent = f64;
+// Number of samples in a wave.
 type Wavelength = f64;
+// Samples / second
 type SampleRate = usize;
+// Cycles / second
 type Frequency = f64;
 
 use std::f64;
