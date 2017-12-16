@@ -26,21 +26,28 @@ use std::f64;
 
 use output::Output;
 use oscillators::{Oscillator, Osc};
+use indexers::PercentIndexer;
+use envelopes::EnvelopeForm;
 
 pub fn run() {
     play_osc();
 }
 
 fn play_osc() {
-    let mut osc1 = Osc::new(0.3, 44_100, Box::new(waveforms::Sine));
-    let mut osc2 = Osc::new(220.0, 44_100, Box::new(waveforms::Square::new(0.7)));
-
     let mut out = output::StdOutput::new();
+
+    let mut osc1 = Osc::new(110.0, 44_100, Box::new(waveforms::Sine));
+    let mut osc2 = Osc::new(110.0, 44_100, Box::new(waveforms::Square::new(0.7)));
+
+    let env = envelopes::Line::new(1.0, 0.0);
+    let mut indexer = indexers::UnpitchedIndexer::new();
+    indexer.set_increment(10.0, 44_100);
 
     loop {
         let sample1 = osc1.get_amplitude();
         let sample2 = osc2.get_amplitude() * 0.5;
-        out.send(sample1 * sample2, 512.0);
+        let env_perc = env.get_percent(indexer.get_next());
+        out.send((sample1 + sample2) * env_perc, 512.0);
     }
 }
 
