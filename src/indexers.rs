@@ -72,10 +72,10 @@ pub trait DynamicPercentIndexer {
 }
 
 pub trait OptionalDynamicPercentIndexer {
-    fn get_next_optional_dynamically(&mut self,
-                                     duration_seconds: Seconds,
-                                     sample_rate: SampleRate)
-                                     -> Option<Percent>;
+    fn get_next_option_dynamically(&mut self,
+                                   duration_seconds: Seconds,
+                                   sample_rate: SampleRate)
+                                   -> Option<Percent>;
 }
 
 pub struct UnpitchedIndexer {
@@ -121,10 +121,10 @@ impl DynamicPercentIndexer for UnpitchedIndexer {
 }
 
 impl OptionalDynamicPercentIndexer for UnpitchedIndexer {
-    fn get_next_optional_dynamically(&mut self,
-                                     duration_seconds: Seconds,
-                                     sample_rate: SampleRate)
-                                     -> Option<Percent> {
+    fn get_next_option_dynamically(&mut self,
+                                   duration_seconds: Seconds,
+                                   sample_rate: SampleRate)
+                                   -> Option<Percent> {
         let result = self.progress;
         if result > 1.0 {
             return None;
