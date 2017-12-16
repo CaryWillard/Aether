@@ -4,6 +4,7 @@ extern crate byteorder;
 pub mod waveforms;
 pub mod indexers;
 pub mod oscillators;
+pub mod envelopeforms;
 pub mod envelopes;
 pub mod output;
 
