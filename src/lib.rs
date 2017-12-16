@@ -130,8 +130,7 @@ fn play_osc() {
     let mut osc1 = Osc::new(440.0,
                             f64::consts::PI * 2.0,
                             44_100,
-                            Box::new(waveforms::Sine),
-                            Box::new(indexers::PitchedIndexer::new()));
+                            Box::new(waveforms::Sine));
 
     let mut out = output::StdOutput::new();
 
