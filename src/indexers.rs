@@ -14,14 +14,14 @@ pub trait DynamicIndexer {
                             -> Phase;
 }
 
-pub struct PhaseIndexer {
+pub struct PitchedIndexer {
     increment: Phase,
     index: Phase,
 }
 
-impl PhaseIndexer {
-    pub fn new() -> PhaseIndexer {
-        PhaseIndexer {
+impl PitchedIndexer {
+    pub fn new() -> PitchedIndexer {
+        PitchedIndexer {
             increment: 0.0,
             index: 0.0,
         }
@@ -31,7 +31,7 @@ impl PhaseIndexer {
                          freq: Frequency,
                          wavelength: Wavelength,
                          sample_rate: SampleRate) {
-        self.increment = PhaseIndexer::get_increment(freq, wavelength, sample_rate);
+        self.increment = PitchedIndexer::get_increment(freq, wavelength, sample_rate);
     }
 
     fn get_increment(freq: Frequency, wavelength: Wavelength, sample_rate: SampleRate) -> Phase {
@@ -39,7 +39,7 @@ impl PhaseIndexer {
     }
 }
 
-impl Indexer for PhaseIndexer {
+impl Indexer for PitchedIndexer {
     fn get_next(&mut self) -> Phase {
         let result = self.index;
         self.index += self.increment;
@@ -47,14 +47,14 @@ impl Indexer for PhaseIndexer {
     }
 }
 
-impl DynamicIndexer for PhaseIndexer {
+impl DynamicIndexer for PitchedIndexer {
     fn get_next_dynamically(&mut self,
                             freq: Frequency,
                             wavelength: Wavelength,
                             sample_rate: SampleRate)
                             -> Phase {
         let result = self.index;
-        self.increment = PhaseIndexer::get_increment(freq, wavelength, sample_rate);
+        self.increment = PitchedIndexer::get_increment(freq, wavelength, sample_rate);
         self.index += self.increment;
         result
     }

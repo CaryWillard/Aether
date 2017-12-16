@@ -35,7 +35,7 @@ fn play_sine() {
     let wavelength: Wavelength = f64::consts::PI * 2.0;
     let sample_rate: SampleRate = 44_100;
 
-    let mut ind = indexers::PhaseIndexer::new();
+    let mut ind = indexers::PitchedIndexer::new();
     ind.set_increment(freq, wavelength, sample_rate);
 
     let wave = waveforms::Sine;
@@ -52,7 +52,7 @@ fn play_saw() {
     let wavelength: Wavelength = f64::consts::PI * 2.0;
     let sample_rate: SampleRate = 44_100;
 
-    let mut ind = indexers::PhaseIndexer::new();
+    let mut ind = indexers::PitchedIndexer::new();
     ind.set_increment(freq, wavelength, sample_rate);
 
     let wave = waveforms::Saw::new(wavelength);
@@ -69,7 +69,7 @@ fn play_square() {
     let wavelength: Wavelength = 1.0;
     let sample_rate: SampleRate = 44_100;
 
-    let mut ind = indexers::PhaseIndexer::new();
+    let mut ind = indexers::PitchedIndexer::new();
     ind.set_increment(freq, wavelength, sample_rate);
 
     let wave = waveforms::Square::new(wavelength, 0.5);
@@ -89,7 +89,7 @@ fn play_white_noise() {
     let sample_rate: SampleRate = 44_100;
     let num_samples: usize = sample_rate * 5;
 
-    let mut ind = indexers::PhaseIndexer::new();
+    let mut ind = indexers::PitchedIndexer::new();
     ind.set_increment(freq, num_samples as Wavelength, sample_rate);
 
     let wave = waveforms::WhiteNoise::new(num_samples);
@@ -108,10 +108,10 @@ fn play_mod_sine() {
     let freq1: Frequency = 440.0;
     let freq2: Frequency = 110.0;
 
-    let mut ind1 = indexers::PhaseIndexer::new();
+    let mut ind1 = indexers::PitchedIndexer::new();
     ind1.set_increment(freq1, wavelength, sample_rate);
 
-    let mut ind2 = indexers::PhaseIndexer::new();
+    let mut ind2 = indexers::PitchedIndexer::new();
     ind2.set_increment(freq2, wavelength, sample_rate);
 
     let wave1 = waveforms::Sine;
@@ -131,7 +131,7 @@ fn play_osc() {
                             f64::consts::PI * 2.0,
                             44_100,
                             Box::new(waveforms::Sine),
-                            Box::new(indexers::PhaseIndexer::new()));
+                            Box::new(indexers::PitchedIndexer::new()));
 
     let mut out = output::StdOutput::new();
 
