@@ -71,7 +71,7 @@ pub trait DynamicPercentIndexer {
                             -> Percent;
 }
 
-pub trait OptionalDynamicPercentIndexer {
+pub trait OptionDynamicPercentIndexer {
     fn get_next_option_dynamically(&mut self,
                                    duration_seconds: Seconds,
                                    sample_rate: SampleRate)
@@ -120,7 +120,7 @@ impl DynamicPercentIndexer for UnpitchedIndexer {
     }
 }
 
-impl OptionalDynamicPercentIndexer for UnpitchedIndexer {
+impl OptionDynamicPercentIndexer for UnpitchedIndexer {
     fn get_next_option_dynamically(&mut self,
                                    duration_seconds: Seconds,
                                    sample_rate: SampleRate)

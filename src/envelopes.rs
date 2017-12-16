@@ -2,15 +2,19 @@
 
 use super::{Percent, Seconds, SampleRate};
 use super::envelope_forms::EnvelopeForm;
-use super::indexers::{DynamicPercentIndexer, UnpitchedIndexer};
+use super::indexers::{DynamicPercentIndexer, UnpitchedIndexer, OptionDynamicPercentIndexer};
 
 pub trait Envelope {
     fn get_percent(&mut self) -> Percent;
 }
 
+pub trait OptionEnvelope {
+    fn get_percent_option(&mut self) -> Option<Percent>;
+}
+
 pub struct Env {
     envelope_form: Box<EnvelopeForm>,
-    indexer: Box<DynamicPercentIndexer>,
+    indexer: Box<UnpitchedIndexer>,
     duration_seconds: Seconds,
     sample_rate: SampleRate,
 }
@@ -35,5 +39,17 @@ impl Envelope for Env {
             .get_next_dynamically(self.duration_seconds, self.sample_rate);
 
         self.envelope_form.get_percent(p)
+    }
+}
+
+impl OptionEnvelope for Env {
+    fn get_percent_option(&mut self) -> Option<Percent> {
+        let perc = self.indexer
+            .get_next_option_dynamically(self.duration_seconds, self.sample_rate);
+
+        match perc {
+            Some(p) => Some(self.envelope_form.get_percent(p)),
+            None => None,
+        }
     }
 }
