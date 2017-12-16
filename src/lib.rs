@@ -24,15 +24,15 @@ pub fn run() {
 }
 
 fn play_osc() {
-    let mut osc1 = Osc::new(220.0, 44_100, Box::new(waveforms::Sine));
-    let mut osc2 = Osc::new(220.0, 44_100, Box::new(waveforms::Saw));
+    let mut osc1 = Osc::new(0.3, 44_100, Box::new(waveforms::Sine));
+    let mut osc2 = Osc::new(220.0, 44_100, Box::new(waveforms::Square::new(0.7)));
 
     let mut out = output::StdOutput::new();
 
     loop {
         let sample1 = osc1.get_amplitude();
         let sample2 = osc2.get_amplitude() * 0.5;
-        out.send(sample1 + sample2, 512.0);
+        out.send(sample1 * sample2, 512.0);
     }
 }
 
