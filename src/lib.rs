@@ -1,5 +1,6 @@
 extern crate rand;
 extern crate byteorder;
+extern crate jack;
 
 pub mod waveforms;
 pub mod indexers;
@@ -7,6 +8,7 @@ pub mod oscillators;
 pub mod envelope_forms;
 pub mod envelopes;
 pub mod output;
+pub mod jack_main;
 
 // Seconds
 type Seconds = f64;
@@ -28,9 +30,11 @@ use std::f64;
 use output::Output;
 use oscillators::{Oscillator, Osc};
 use envelopes::OptionEnvelope;
+use jack_main::run_client;
 
 pub fn run() {
-    play_osc();
+    run_client();
+    // play_osc();
 }
 
 fn play_osc() {
