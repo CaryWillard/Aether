@@ -18,7 +18,7 @@ fn read_freq() -> Option<f64> {
 }
 
 pub fn run_client() {
-    // 1. open a client
+    // 1. Open a client
     let (client, _status) = Client::new("rust_jack_sine", client_options::NO_START_SERVER).unwrap();
 
     // 2. register port
@@ -65,7 +65,6 @@ pub fn run_client() {
     }
 
     // 6. Optional deactivate. not required since activate_client will deactivate on
-    // drop, though
-    // explicit deactivate may help you identify errors in deactivate.
+    // drop, though explicit deactivate may help you identify errors in deactivate.
     active_client.deactivate().unwrap();
 }
