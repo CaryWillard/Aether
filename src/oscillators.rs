@@ -6,6 +6,7 @@ use super::indexers::{DynamicIndexer, PitchedIndexer};
 
 pub trait Oscillator {
     fn get_amplitude(&mut self) -> Amplitude;
+    fn set_frequency(&mut self, freq: Frequency);
 }
 
 pub struct Osc {
@@ -34,5 +35,9 @@ impl Oscillator for Osc {
         let i: Phase = self.indexer
             .get_next_dynamically(self.freq, self.wavelength, self.sample_rate);
         self.waveform.get_amplitude(i)
+    }
+
+    fn set_frequency(&mut self, freq: Frequency) {
+        self.freq = freq;
     }
 }
