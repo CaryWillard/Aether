@@ -14,3 +14,4 @@ path = "src/main.rs"
 [dependencies]
 rand = "0.3.18"
 byteorder = "1"
+jack = "0.5.6"
