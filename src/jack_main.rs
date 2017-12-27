@@ -10,6 +10,7 @@ use std::sync::mpsc::channel;
 
 use super::oscillators::{Oscillator, Osc};
 use super::waveforms::Sine;
+use super::Frequency;
 
 
 fn read_freq() -> Option<f64> {
@@ -29,14 +30,13 @@ pub fn run_client() {
         .unwrap();
 
     // 3. define process callback handler
-    let mut frequency = 220.0;
     let sample_rate = client.sample_rate();
     let frame_t = 1.0 / sample_rate as f64;
     let mut time = 0.0;
     let (tx, rx) = channel();
 
     // Define Oscillators, etc.
-    let mut osc = Osc::new(frequency, sample_rate, Box::new(Sine));
+    let mut osc = Osc::new(440.0, sample_rate, Box::new(Sine));
 
     let process = ClosureProcessHandler::new(move |_: &Client, ps: &ProcessScope| -> JackControl {
         // Get output buffer
@@ -46,7 +46,8 @@ pub fn run_client() {
         // Check frequency requests
         while let Ok(f) = rx.try_recv() {
             time = 0.0;
-            frequency = f;
+            // frequency = f;
+            osc.set_frequency(f as Frequency);
         }
 
         // Write output
